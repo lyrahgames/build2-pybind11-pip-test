@@ -1,0 +1,17 @@
+cxx.std = latest
+using cxx
+
+hxx{*}: extension = hpp
+cxx{*}: extension = cpp
+
+using in
+
+define py: file
+py{*}: extension = py
+
+pylib_extension = so
+if ($cxx.target.class == 'windows')
+  pylib_extension = pyd
+
+define pylib: file
+pylib{*}: extension = $pylib_extension

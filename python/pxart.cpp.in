@@ -1,0 +1,12 @@
+#include <pybind11/pybind11.h>
+//
+#include <pxart/pxart.hpp>
+
+PYBIND11_MODULE(pxart, m) {
+  m.doc() = "$project.summary$";
+  m.def(
+      "monte_carlo_pi",
+      [](size_t n) { return pxart::monte_carlo_pi<float>(n); },
+      "Monte Carlo π");
+  m.attr("__version__") = "$version$";
+}

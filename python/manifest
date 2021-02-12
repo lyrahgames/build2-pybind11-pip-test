@@ -1,0 +1,11 @@
+: 1
+name: pxart-python
+version: 0.1.0-a.0.z
+project: pxart
+summary: Python Wrapper of the pxart library
+license: proprietary
+
+depends: * build2 >= 0.13.0
+depends: * bpkg >= 0.13.0
+
+depends: pxart

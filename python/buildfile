@@ -1,0 +1,17 @@
+import libs = pxart%lib{pxart}
+
+./: manifest
+
+module = pxart
+library = $module.$pylib_extension
+# license = $(../pxart/: project.version)
+
+./: py{setup}: in{setup}
+
+cxx{pxart}: in{pxart}
+libs{$module}: cxx{** -pxart} cxx{pxart} $libs
+
+./: pylib{$module}: libs{$module}
+{{
+  cp $path($<) $path($>)
+}}

@@ -1,0 +1,2 @@
+import pkgs = pxart/
+./: $pkgs

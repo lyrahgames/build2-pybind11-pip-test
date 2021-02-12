@@ -1,0 +1,9 @@
+: 1
+name: pxart
+version: 0.1.0-a.0.z
+project: pxart
+summary: pxart header-only C++ library
+license: proprietary
+
+depends: * build2 >= 0.13.0
+depends: * bpkg >= 0.13.0

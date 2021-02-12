@@ -1,0 +1,16 @@
+from setuptools import setup
+
+__version__ = "$version$"
+__summary__ = "$project.summary$"
+
+setup(
+  name="$module$",
+  version=__version__,
+  author="lyrahgames",
+  author_email="lyrahgames@mailbox.org",
+  description=__summary__,
+  py_modules=["$module$"],
+  packages=[''],
+  package_data={'': ['$library$']},
+  zip_safe=False
+)

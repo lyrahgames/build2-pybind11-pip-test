@@ -9,3 +9,7 @@ depends: * build2 >= 0.13.0
 depends: * bpkg >= 0.13.0
 
 depends: pxart
+
+requires: (linux && (gcc || clang)) | (windows && msvc)
+requires: python ^ 3.0.0
+requires: pybind11

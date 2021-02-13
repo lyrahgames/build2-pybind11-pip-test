@@ -11,6 +11,18 @@ library = $module.$pylib_extension
 cxx{pxart}: in{pxart}
 libs{$module}: cxx{** -pxart} cxx{pxart} $libs
 
+cxx.poptions += $config.pxart_python.pybind11.includes
+
+# info $config.pxart_python.python.prefix
+# info $config.pxart_python.python.version.major
+# info $config.pxart_python.python.version.minor
+
+if ($cxx.target.class == 'windows' && $cxx.id == 'msvc')
+{
+  cxx.loptions += "/LIBPATH:$config.pxart_python.python.prefix/libs"
+  cxx.libs += "python$(config.pxart_python.python.version.major)$(config.pxart_python.python.version.minor).lib"
+}
+
 ./: pylib{$module}: libs{$module}
 {{
   cp $path($<) $path($>)

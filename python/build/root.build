@@ -15,3 +15,8 @@ if ($cxx.target.class == 'windows')
 
 define pylib: file
 pylib{*}: extension = $pylib_extension
+
+config [strings] config.pxart_python.pybind11.includes
+config [string] config.pxart_python.python.prefix
+config [uint64] config.pxart_python.python.version.major
+config [uint64] config.pxart_python.python.version.minor

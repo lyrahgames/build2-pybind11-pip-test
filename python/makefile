@@ -17,7 +17,7 @@ include build/bootstrap/out-root.build
 .PHONY: default clean install uninstall test
 
 default:
-	b configure config.pxart_python.pybind11.includes="$(PYBIND11_INCLUDES)" config.pxart_python.python.prefix="$(PYTHON_PREFIX)" config.pxart_python.python.version.major="$(PYTHON_VERSION_MAJOR)" config.pxart_python.python.version.minor="$(PYTHON_VERSION_MINOR)"
+	b configure: config.pxart_python.pybind11.includes="$(PYBIND11_INCLUDES)" config.pxart_python.python.prefix="$(PYTHON_PREFIX)" config.pxart_python.python.version.major="$(PYTHON_VERSION_MAJOR)" config.pxart_python.python.version.minor="$(PYTHON_VERSION_MINOR)"
 	b -v
 
 clean:

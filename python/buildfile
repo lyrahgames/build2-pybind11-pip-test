@@ -22,6 +22,8 @@ if ($cxx.target.class == 'windows' && $cxx.id == 'msvc')
   cxx.loptions += "/LIBPATH:$config.pxart_python.python.prefix/libs"
   cxx.libs += "python$(config.pxart_python.python.version.major)$(config.pxart_python.python.version.minor).lib"
 }
+elif ($cxx.target.class == 'macos')
+  cxx.loptions += -undefined dynamic_lookup
 
 ./: pylib{$module}: libs{$module}
 {{

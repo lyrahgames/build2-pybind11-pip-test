@@ -5,7 +5,8 @@ build2-Based Header-Only C++ Library wrapped by pybind11 into a Python-callable 
 ## Requirements
 - C++11
 - Linux: GCC | Clang
-- Windows MSVC
+- Windows: MSVC
+- MacOS: Clang
 - Python3
 - Pybind11
 
@@ -15,7 +16,7 @@ build2-Based Header-Only C++ Library wrapped by pybind11 into a Python-callable 
     cd build2-pybind11-pip-test
     bdep init -C @gcc cc config.cxx=g++ "config.cxx.coptions=-O3 -march=native"
     cd python
-    make
+    make # Probably, this one has to be called two times.
     make install
     make test
 

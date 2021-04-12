@@ -6,11 +6,10 @@ build2-Based Header-Only C++ Library wrapped by pybind11 into a Python-callable 
 - Standard: C++11
 - Compiler: GCC | Clang | MSVC
 - Operating System: Linux | Windows | MacOS
-- Make
-- build2
-- Python
+- build2 >= 0.13.0
+- Python ^ 3.0.0
 - pip
-- Pybind11
+- Pybind11 ^ 2.6.0 
 
 # Explanation and Adjustment
 Sadly, we cannot directly call the Python executable inside the build2 buildfiles directly, yet.

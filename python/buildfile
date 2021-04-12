@@ -1,31 +1,70 @@
+# Use configured python executable to extract important information
+# needed for the build system and the compilation.
+python = $config.pxart_python.python
+pybind11_includes = \
+  $regex.split([string] $process.run($python -m pybind11 --includes), ' ', '')
+python_prefix = \
+  $process.run($python -c 'import sys; print(sys.prefix)')
+python_version_major = \
+  $process.run($python -c 'import sys; print(sys.version_info.major)')
+python_version_minor = \
+  $process.run($python -c 'import sys; print(sys.version_info.minor)')
+
+# For Developer: Print extracted variables.
+# info python = $python
+# info pybind11_includes = $pybind11_includes
+# info python_prefix = $python_prefix
+# info python_version_major = $python_version_major
+# info python_version_minor = $python_version_minor
+
+# Import C++ library to be wrapped.
 import libs = pxart%lib{pxart}
 
-./: manifest
-
+# Define module name for the Python package.
 module = pxart
-library = $module.$pylib_extension
-# license = $(../pxart/: project.version)
 
+# Configure the file 'setup.py' for pip and
+# insert information known by the build system.
 ./: py{setup}: in{setup}
+library = $(module).$(pylib_extension) # Variable needed for 'setup.py'.
 
+# Configure the Pybind11 wrapper file to insert
+# important information known by the build system.
 cxx{pxart}: in{pxart}
-libs{$module}: cxx{** -pxart} cxx{pxart} $libs
 
-cxx.poptions += $config.pxart_python.pybind11.includes
-
-# info $config.pxart_python.python.prefix
-# info $config.pxart_python.python.version.major
-# info $config.pxart_python.python.version.minor
-
+# Define library target which represents the Python module/package.
+./: pylib{$module}: cxx{** -pxart} cxx{pxart} $libs
+{
+  install = false  # No install because pip will do this.
+}
+# Include Python and Pybind11 header files
+# for successful compilation of the wrapper.
+cxx.poptions += $pybind11_includes
+# Set OS-dependent linker flags.
 if ($cxx.target.class == 'windows' && $cxx.id == 'msvc')
 {
-  cxx.loptions += "/LIBPATH:$config.pxart_python.python.prefix/libs"
-  cxx.libs += "python$(config.pxart_python.python.version.major)$(config.pxart_python.python.version.minor).lib"
+  # Add Python library path.
+  cxx.loptions += "/LIBPATH:$python_prefix/libs"
+  # Add generic Python library based on standard naming scheme.
+  cxx.libs += "python$(python_version_major)$(python_version_minor).lib"
 }
 elif ($cxx.target.class == 'macos')
   cxx.loptions += -undefined dynamic_lookup
 
-./: pylib{$module}: libs{$module}
+# Add post-install and post-uninstall hooks
+# by using ad-hoc recipes to customize
+# install and uninstall operations.
+./:
+% install
 {{
-  cp $path($<) $path($>)
+  diag Post-Install: pip install
+  $python -m pip install $out_base
 }}
+% uninstall
+{{
+  diag Post-Uninstall: pip uninstall
+  $python -m pip uninstall -y $module
+}}
+# We do not want to install the manifest file
+# for a Python package installed by pip.
+# ./: manifest

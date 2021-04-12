@@ -6,17 +6,22 @@ cxx{*}: extension = cpp
 
 using in
 
+# Python Files
+# Needed for files of type 'in' which can be configured.
 define py: file
 py{*}: extension = py
 
-pylib_extension = so
-if ($cxx.target.class == 'windows')
-  pylib_extension = pyd
+# Libraries Callable by Python
+pylib_extension = ($cxx.target.class == 'windows' ? pyd : so)
+define pylib: libs
+pylib{*}:
+{
+  extension = $pylib_extension  # Custom extension.
+  bin.lib.prefix =              # No prefix.
+  backlink = false              # No backlink needed due to pip install.
+}
 
-define pylib: file
-pylib{*}: extension = $pylib_extension
-
-config [strings] config.pxart_python.pybind11.includes
-config [string] config.pxart_python.python.prefix
-config [uint64] config.pxart_python.python.version.major
-config [uint64] config.pxart_python.python.version.minor
+# Python Executable
+# This configuration variables encodes also the python version
+# used for the compilation and installation.
+config [string] config.pxart_python.python ?= 'python'

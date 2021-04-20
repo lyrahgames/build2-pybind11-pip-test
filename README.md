@@ -6,10 +6,10 @@ build2-Based Header-Only C++ Library wrapped by pybind11 into a Python-callable 
 - Standard: C++11
 - Compiler: GCC | Clang | MSVC
 - Operating System: Linux | Windows | MacOS
-- build2 >= 0.13.0
-- Python ^ 3.0.0
+- [build2](https://build2.org/) >= 0.13.0
+- [Python](https://www.python.org/) ^ 3.0.0
 - pip
-- Pybind11 ^ 2.6.0 
+- [Pybind11](https://pybind11.readthedocs.io/en/stable/) ^ 2.6.0 
 
 # Explanation and Adjustment
 The build2 build system uses a custom configuration variable to hold the value for the Python executable.
@@ -18,7 +18,7 @@ The default value is `python`.
 On some platforms, this command may be linked to Python 2 and therefore must be adjusted.
 To tweak or customize the used version, use the following command inside the `python` directory after a successful initialization of a persistent configuration done in the following sections.
 
-    b configure: "config.pxart_python.python=python3"
+    b configure "config.pxart_python.python=python3"
 
 After compiling the wrapper library, pip is used to install the generated Python package.
 This installation process seems only to link against the configuration folder.
@@ -41,7 +41,7 @@ If that happens then remove the created configuration first by `bdep config remo
 Initialize the default build2 configuration with GCC or Clang.
 We recommend maximum compiler optimization.
 
-    bdep init -C @gcc cc config.cxx=g++ "config.cxx.coptions=-O3 -march=native"
+    bdep init -C @default cc config.cxx=c++ "config.cxx.coptions=-O3 -march=native"
 
 Afterwards, traverse to the `python` directory and adjust the used Python executable as described in the previous section, if needed.
 Then build the library by using `b`.
@@ -109,7 +109,7 @@ Clone the repository and change into the directory.
 Initialize the default build2 configuration.
 You have to use MSVC because Python does not allow to build `.pyd` libraries by MinGW.
 
-    bdep init -C @gcc cc config.cxx=cl "config.cxx.coptions=/O2"
+    bdep init -C @msvc cc config.cxx=cl "config.cxx.coptions=/O2"
 
 Afterwards, traverse to the `python` directory and customize the python executable as stated in the previous section, if needed.
 Then build the library by using `b`.
@@ -120,7 +120,7 @@ Then build the library by using `b`.
 At the end, the generated Python package should be installed and then tested.
 
     b install
-    b test
+    python tests/main.py
 
 At this point, you are able to import a new module `pxart` in Python and run its function `monte_carlo_pi(n)` to estimate the value of π.
 
